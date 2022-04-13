@@ -1,16 +1,16 @@
 import { DisneyCharacter } from "../disney_character"
-import React, {useContext } from 'react';
-import {FavouritesContext } from '../App';
+import { useFavourites, useFavouritesUpdate } from '../characterContext';
 
-interface CharacterProps{
-	character: DisneyCharacter;
-	updateFavourites: (favourites: Array<number>) => void;
+interface CharacterProps {
+  character: DisneyCharacter;
+  updateFavourites: (favourites: Array<number>) => void;
 }
 
 
-const Character : React.FC<CharacterProps> = ( { character, updateFavourites }) =>  {
+const Character: React.FC<CharacterProps> = ({ character, updateFavourites }) => {
 
-  const characterFavourites = useContext(FavouritesContext);
+  // const characterFavourites = useContext(FavouritesContext);
+  const characterFavourites = useFavourites()
 
   // Define a default in case the character doesn't have an image
   let imageSrc = "https://picsum.photos/300/200/?blur";
@@ -19,14 +19,14 @@ const Character : React.FC<CharacterProps> = ( { character, updateFavourites }) 
     imageSrc = character.imageUrl
   }
 
-  function toggleFavouriteForCharacter(characterId : number) {
-    if(!characterFavourites.includes(characterId)) {
-        // add to favourites
-        updateFavourites([...characterFavourites, characterId]);
+  function toggleFavouriteForCharacter(characterId: number) {
+    if (!characterFavourites.includes(characterId)) {
+      // add to favourites
+      updateFavourites([...characterFavourites, characterId]);
     }
     else {
       // remove from favourites
-      const updatedFavourites = characterFavourites.filter((id) => id !== characterId);
+      const updatedFavourites = characterFavourites.filter((id: any) => id !== characterId);
       updateFavourites(updatedFavourites);
     }
     console.log(characterFavourites)
@@ -37,8 +37,8 @@ const Character : React.FC<CharacterProps> = ( { character, updateFavourites }) 
 
       <h2>{character.name}</h2>
 
-      <div className="character-item__actions" onClick={()=>toggleFavouriteForCharacter(character._id)}>
-      {!characterFavourites.includes(character._id) ? "Add to Favourites" : "Favourited"}
+      <div className="character-item__actions" onClick={() => toggleFavouriteForCharacter(character._id)}>
+        {!characterFavourites.includes(character._id) ? "Add to Favourites" : "Favourited"}
       </div>
 
       <img className="character-item__img" src={imageSrc} alt={character.name} />

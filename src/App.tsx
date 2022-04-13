@@ -6,37 +6,37 @@ import CharacterContainer from './components/character_container';
 import Navigation from './components/navigation';
 import { DisneyCharacter } from './disney_character';
 import axios from 'axios';
+import CharacterContext from './characterContext';
 
-export const FavouritesContext = React.createContext<number[]>([]);
+// export const FavouritesContext = React.createContext<number[]>([]);
 
-const App : React.FC = () => {
+const App: React.FC = () => {
 
-	const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  
   const [characters, setCharacters] = useState<Array<DisneyCharacter>>([]);
 
-  const [characterFavourites, setCharacterFavourites] = useState<number[]>([]);
+  // const [characterFavourites, setCharacterFavourites] = useState<number[]>([]);
 
   useEffect(() => {
     getCharacters(currentPage)
-  },[currentPage]);
+  }, [currentPage]);
 
-  const getCharacters = async (pageNumber : number) => {
-    
+  const getCharacters = async (pageNumber: number) => {
+
     const apiResponse = await axios.get(`http://api.disneyapi.dev/characters?page=${pageNumber}`);
     setCharacters(apiResponse.data.data);
   };
 
   return (
-    <FavouritesContext.Provider value={characterFavourites}>
+    <CharacterContext>
       <div className="page">
         <Header currentPage={currentPage} />
         <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        <CharacterContainer characters={characters} updateFavourites={setCharacterFavourites}  />
+        <CharacterContainer characters={characters} />
       </div>
-    </FavouritesContext.Provider>
-);
+    </CharacterContext>
+  );
 }
 
 export default App;
