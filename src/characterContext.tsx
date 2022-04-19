@@ -14,7 +14,7 @@ export function useFavouritesUpdate() {
 
 const CharacterContext: React.FC = ({ children }) => {
 
-    const [characterFavourites, setCharacterFavourites] = useState<number[]>([]);
+    const [characterFavourites, setCharacterFavourites] = useState<any[]>([]);
 
     return (
         <FavouritesContext.Provider value={characterFavourites}>
